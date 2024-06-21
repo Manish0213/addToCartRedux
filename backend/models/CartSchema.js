@@ -12,6 +12,9 @@ const cartSchema = new Schema({
     },
     subtotal: {
         type: Number,
+    },
+    size: {
+        type: String,
     }
 })
 

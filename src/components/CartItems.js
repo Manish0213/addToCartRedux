@@ -26,6 +26,10 @@ const CartItems = () => {
                 <img src={`http://localhost:5000/uploads/${cartItem.productId.image}`} alt="Product Image"/>
                 <div class="cart-item-info">
                     <div class="cart-item-title">{cartItem.productId.title}</div>
+                    <div class="cart-item-size">
+                        Size: {cartItem.size}
+                        <span className="dropdown-sign">▼</span>
+                    </div>
                     <div class="cart-item-price">${cartItem.productId.price}</div>
                     <div class="cart-item-quantity">
                         <button class="quantity-modify" data-action="decrement" onClick={() => dispatch(updatecartitemquantitydecrease(cartItem))} disabled={cartItem.quantity <= 1}>-</button>

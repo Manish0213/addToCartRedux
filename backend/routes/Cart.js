@@ -10,22 +10,40 @@ router.get('/fetchcartitems', async (req, res) => {
 
 router.post('/additemtocart/:id', async (req, res) => {
     const id = req.params.id;
-   const { price } = req.body;
+    const { price, size } = req.body;
 
-   const cartItem = await Cart.findOne({productId: id});
-   if(!cartItem) {
-    var newItem = new Cart({ productId: id, quantity: 1, subtotal: price });
+   try {
+   const cartItems = await Cart.find({productId: id});
+
+   if(cartItems.length === 0) {
+    var newItem = new Cart({ productId: id, quantity: 1, subtotal: price, size });
     newItem = await newItem.save();
-    res.send(newItem);
-   } else {
-    var quantity = cartItem.quantity;
-    var subtotal = cartItem.subtotal;
-    quantity = quantity + 1;
-    subtotal = subtotal + price;
-    const updatedItem = await Cart.findByIdAndUpdate(cartItem._id, {quantity,subtotal} , { overwriteDiscriminatorKey: true, new: true });
-    res.send(updatedItem);
+    return res.send(newItem);
    }
-})
+    
+   var itemFound = false;
+
+   for(let cartItem of cartItems) {
+      if(size === cartItem.size) {
+         var quantity = cartItem.quantity;
+         var subtotal = cartItem.subtotal;
+         quantity = quantity + 1;
+         subtotal = subtotal + price;
+         const updatedItem = await Cart.findByIdAndUpdate(cartItem._id, {quantity,subtotal} , { overwriteDiscriminatorKey: true, new: true });
+         itemFound = true;
+         return res.send(updatedItem);
+      } 
+   };
+
+   if(!itemFound){
+      var newItem = new Cart({ productId: id, quantity: 1, subtotal: price, size });
+      newItem = await newItem.save();
+      return res.send(newItem);
+   }
+   } catch (error) {
+      res.status(500).send({ error: 'Failed to add item to cart' });
+  }
+});
 
 router.put('/updateitembyquantityincrease/:id', async (req, res) => {
    const cartItemId = req.params.id;

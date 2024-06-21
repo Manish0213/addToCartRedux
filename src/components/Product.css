@@ -40,3 +40,44 @@
     cursor: pointer;
     text-decoration: none;
 }
+
+
+/* size chart */
+
+.size-selector {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .size-chart {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  
+  .sizes {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .sizes input[type="radio"] {
+    display: none;
+  }
+  
+  .sizes label {
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s;
+  }
+  
+  .sizes input[type="radio"]:checked + label {
+    border-color: black;
+    background-color: #ffe6e6;
+    color: black;
+  }
+  

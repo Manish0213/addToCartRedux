@@ -81,3 +81,19 @@
     margin-top: 20px;
     align-self: flex-end;
 }
+
+
+.cart-item-size {
+    font-size: 14px;
+    color: #888;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.dropdown-sign {
+    font-size: 12px;
+    margin-left: 5px;
+    cursor: pointer;
+    color: #888;
+}

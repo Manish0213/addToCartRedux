@@ -9,10 +9,10 @@ router.get('/getallproducts', async (req, res) => {
 })
 
 router.post('/create', upload.single('productImage'), async (req, res) => {
-    const { title, description, price, category } = req.body;
+    const { title, description, price, category, sizes } = req.body;
     const image = req.file.filename;
     
-    var newProduct = new Product({title,price,description,category,image});
+    var newProduct = new Product({title,price,description,category,image,sizes});
     newProduct = await newProduct.save();
     res.json(newProduct);
 })
