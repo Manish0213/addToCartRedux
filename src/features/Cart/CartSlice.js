@@ -80,6 +80,18 @@ export const updatecartitemquantitydecrease = createAsyncThunk(
   }
 );
 
+//update cart items by size
+export const updateCartItemSize = createAsyncThunk("updateCartItemSize", async (updatedCartItem) => {
+  const response = await fetch(`http://localhost:5000/cart/updateitembysize/${updatedCartItem._id}`, {
+    method: 'PUT',
+    headers: {
+      'content-type': 'application/json'
+    },
+    body: JSON.stringify(updatedCartItem)
+  });
+  return response.json();
+});
+
 const initialState = {
   cartItems: [],
   loading: false,
@@ -168,6 +180,28 @@ const cartSlice = createSlice({
       state.cartItems = state.cartItems.filter((cartItem) => cartItem._id !== action.payload._id);
     });
     builder.addCase(deletecartitem.rejected, (state, action) => {
+      state.isError = true;
+    });
+
+
+    builder.addCase(updateCartItemSize.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(updateCartItemSize.fulfilled, (state, action) => {
+      state.loading = false;
+      
+      state.cartItems = state.cartItems.filter(( cartItem ) => 
+         !(cartItem.productId._id === action.payload.productId._id && cartItem.size === action.payload.size) 
+      )
+
+      for( var item of state.cartItems) {
+        if(item._id === action.payload._id){
+          item.size = action.payload.size;
+          break;
+        }
+      }
+    });
+    builder.addCase(updateCartItemSize.rejected, (state, action) => {
       state.isError = true;
     });
   },

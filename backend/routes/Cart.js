@@ -63,6 +63,17 @@ router.put('/updateitembyquantitydecrease/:id', async (req, res) => {
    res.send(updatedItem);
 })
 
+router.put('/updateitembysize/:id', async (req, res) => {
+   const cartItemId = req.params.id;
+   var { productId, size } = req.body;
+   await Cart.findOneAndDelete({ productId: productId._id, size });
+   const updatedItem = await Cart.findByIdAndUpdate(cartItemId, {size} , { overwriteDiscriminatorKey: true, new: true });
+   res.send(updatedItem);
+
+   // const items = await Cart.find({});
+   // res.send(items);
+})
+
 router.delete('/removecartitem/:id', async (req, res) => {
    const id = req.params.id;
    const deletedItem = await Cart.findByIdAndDelete(id);
