@@ -9,6 +9,7 @@ const CartItems = () => {
   const cartItems = useSelector((state) => state.cart.cartItems);
   const [selectedCartItem, setSelectedCartItem] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
+  const [isSizeChanged, setIsSizeChanged] = useState(false);
 
   useEffect(() => {
     dispatch(fetchcartitems());
@@ -17,6 +18,7 @@ const CartItems = () => {
   useEffect(() => {
     if (selectedCartItem) {
       setSelectedSize(selectedCartItem.size);
+      setIsSizeChanged(false);
     }
   }, [selectedCartItem]);
 
@@ -26,21 +28,16 @@ const CartItems = () => {
 
   const handleSizeSelect = (event) => {
     setSelectedSize(event.target.value);
-
-    // const newSize = e.target.value;
-    // if (newSize !== selectedSize) {
-    //   setSelectedSize(newSize);
-    //   onSizeChange(newSize); // Notify parent component of the size change
-    // }
+    console.log("I am called");
+    setIsSizeChanged(true);
   };
 
   const handleSizeUpdate = () => {
-    if (selectedSize) {
+    if (isSizeChanged === true) {
         const updatedCartItem = {
           ...selectedCartItem,
           size: selectedSize,
         };
-        setSelectedSize(null);
         // Dispatch action to update the cart item size if needed
         dispatch(updateCartItemSize(updatedCartItem));
       }

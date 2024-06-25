@@ -189,9 +189,11 @@ const cartSlice = createSlice({
     });
     builder.addCase(updateCartItemSize.fulfilled, (state, action) => {
       state.loading = false;
-      
-      state.cartItems = state.cartItems.filter(( cartItem ) => 
-         !(cartItem.productId._id === action.payload.productId._id && cartItem.size === action.payload.size) 
+
+      state.cartItems = state.cartItems.filter(( cartItem ) => {
+        console.log(cartItem.productId._id, '===', action.payload.productId._id, '===', cartItem.size === action.payload.size);
+        return !(cartItem.productId._id === action.payload.productId._id && cartItem.size === action.payload.size)
+      } 
       )
 
       for( var item of state.cartItems) {
